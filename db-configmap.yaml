@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-initdb-config
+data:
+  init.sql: |
+    CREATE DATABASE IF NOT EXISTS osint;
+    USE osint;
+    CREATE TABLE member (id VARCHAR(20), password VARCHAR(20));
+    INSERT INTO member VALUES (wpgur0510, 'sman0510');
+    INSERT INTO member VALUES (admin, 'password');
