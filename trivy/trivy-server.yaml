@@ -1,0 +1,42 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: trivy-rules
+  labels:
+    app: trivy-rules
+spec:
+  selector:
+    app: trivy-rules
+  ports:
+    - port: 8088
+      protocol: TCP
+      targetPort: 8088
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivy-rules
+  labels:
+    app: trivy-rules
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trivy-rules
+  template:
+    metadata:
+      labels:
+        app: trivy-rules
+    spec:
+      containers:
+        - name: trivy-rules
+          image: aquasec/trivy:0.47.0
+          imagePullPolicy: Always
+          args:
+            - 'server'
+            - '--listen'
+            - '0.0.0.0:8088'
+          ports:
+            - containerPort: 8088
+              protocol: TCP
